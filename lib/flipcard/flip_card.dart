@@ -36,6 +36,9 @@ class FlipCard extends StatefulWidget {
   /// [focusColor] The option for Inkwell widget's focusColor.
   final Color? focusColor;
 
+  /// [onFlipCallback] Gets called when flip executes
+  final Function? onFlipCallback;
+
   const FlipCard({
     Key? key,
     this.focusColor,
@@ -48,6 +51,7 @@ class FlipCard extends StatefulWidget {
     this.axis = FlipAxis.vertical,
     required this.rotateSide,
     this.animationDuration = const Duration(milliseconds: 800),
+    this.onFlipCallback,
   }) : super(key: key);
 
   @override
@@ -77,6 +81,9 @@ class FlipCardState extends State<FlipCard> with TickerProviderStateMixin {
   ///Flip the card
   Future flipCard() async {
     if (animationController.isAnimating) return;
+    if (widget.onFlipCallback != null) {
+      widget.onFlipCallback!();
+    }
     isFront = !isFront;
     await animationController.forward(from: 0).then((value) => anglePlus = pi);
   }
